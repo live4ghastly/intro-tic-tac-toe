@@ -1,0 +1,87 @@
+using System;
+
+class TicTacToe
+{
+    static char[] board = { '1', '2', '3', '4', '5', '6', '7', '8', '9' };
+    static char currentPlayer = 'X';
+
+    static void Main()
+    {
+        do
+        {
+            Console.Clear();
+            DisplayBoard();
+
+            int choice = int.Parse(Console.ReadLine()) - 1;
+
+            if (board[choice] != 'X' && board[choice] != 'O')
+            {
+                board[choice] = currentPlayer;
+
+                if (CheckForWin())
+                {
+                    Console.Clear();
+                    DisplayBoard();
+                    Console.WriteLine($"Player {currentPlayer} wins!");
+                    break;
+                }
+
+                if (CheckForTie())
+                {
+                    Console.Clear();
+                    DisplayBoard();
+                    Console.WriteLine("tie");
+                    break;
+                }
+
+                SwitchPlayer();
+            }
+            else
+            {
+                Console.WriteLine("Invalid move. Try again.");
+                Console.ReadLine(); // Wait for Enter key to continue
+            }
+
+        } while (true);
+    }
+
+    static void DisplayBoard()
+    {
+        Console.WriteLine($" {board[0]} | {board[1]} | {board[2]} ");
+        Console.WriteLine("-----------");
+        Console.WriteLine($" {board[3]} | {board[4]} | {board[5]} ");
+        Console.WriteLine("-----------");
+        Console.WriteLine($" {board[6]} | {board[7]} | {board[8]} ");
+    }
+
+    static bool CheckForWin()
+    {
+        // Check rows, columns, and diagonals for a win
+        return
+            (board[0] == currentPlayer && board[1] == currentPlayer && board[2] == currentPlayer) ||
+            (board[3] == currentPlayer && board[4] == currentPlayer && board[5] == currentPlayer) ||
+            (board[6] == currentPlayer && board[7] == currentPlayer && board[8] == currentPlayer) ||
+            (board[0] == currentPlayer && board[3] == currentPlayer && board[6] == currentPlayer) ||
+            (board[1] == currentPlayer && board[4] == currentPlayer && board[7] == currentPlayer) ||
+            (board[2] == currentPlayer && board[5] == currentPlayer && board[8] == currentPlayer) ||
+            (board[0] == currentPlayer && board[4] == currentPlayer && board[8] == currentPlayer) ||
+            (board[2] == currentPlayer && board[4] == currentPlayer && board[6] == currentPlayer);
+    }
+
+    static bool CheckForTie()
+    {
+        // Check if all spaces are filled
+        foreach (char cell in board)
+        {
+            if (cell != 'X' && cell != 'O')
+                return false;
+        }
+
+        return true;
+    }
+
+    static void SwitchPlayer()
+    {
+        currentPlayer = (currentPlayer == 'X') ? 'O' : 'X';
+    }
+}
